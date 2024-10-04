@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Registration</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Registration Form</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Display error messages -->
+                    {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password1">Password</label>
+                            <input type="password" class="form-control" id="password1" name="password1" placeholder="Password" required onkeyup="checkPasswordStrength();">
+                            <!-- Real-time password strength feedback -->
+                            <small id="passwordHelp" class="form-text text-muted">Password must be at least 8 characters, contain an uppercase letter, a number, and a special character.</small>
+                            <div id="passwordStrength" class="text-danger"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password2">Confirm Password</label>
+                            <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password" required>
+                            <div id="passwordMatch" class="text-danger"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <!-- Link to login page -->
+                        <div class="text-center mt-3">
+                            <p>Already a user? <a href="{% url 'login' %}">Log in</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Password strength and match validation with JavaScript -->
+<script>
+    function checkPasswordStrength() {
+        const password = document.getElementById("password1").value;
+        let strength = "Weak";
+
+        if (password.length >= 8) {
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                strength = "Strong";
+                document.getElementById("passwordStrength").classList.remove('text-danger');
+                document.getElementById("passwordStrength").classList.add('text-success');
+            } else {
+                strength = "Medium";
+                document.getElementById("passwordStrength").classList.remove('text-success');
+                document.getElementById("passwordStrength").classList.add('text-warning');
+            }
+        } else {
+            document.getElementById("passwordStrength").classList.remove('text-success', 'text-warning');
+            document.getElementById("passwordStrength").classList.add('text-danger');
+        }
+
+        document.getElementById("passwordStrength").textContent = `Password Strength: ${strength}`;
+    }
+
+    // Real-time password match validation
+    document.getElementById("password2").addEventListener("keyup", function () {
+        const password1 = document.getElementById("password1").value;
+        const password2 = this.value;
+
+        if (password1 !== password2) {
+            document.getElementById("passwordMatch").textContent = "Passwords do not match!";
+        } else {
+            document.getElementById("passwordMatch").textContent = "";
+        }
+    });
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

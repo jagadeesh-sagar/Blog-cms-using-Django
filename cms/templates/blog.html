@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Blog</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        .post {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .post-image {
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+        .post-image img {
+            width: 300px; /* Adjust width as needed */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .post-content {
+            flex-grow: 1;
+        }
+        .post-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #007bff;
+        }
+        .post-title a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .post-title a:hover {
+            text-decoration: underline;
+        }
+        .post-details {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .additional-images {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .additional-images img {
+            width: 48%; /* Adjust width as needed */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="text-primary">Blog Posts</h1>
+        </header>
+        <div>
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-image">
+                        <img src="{{ post.image.url }}" alt="Main image for {{ post.title }}">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-title">
+                            <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a>
+                        </div>
+                        <div class="post-details">
+                            <strong>Topic:</strong> {{ post.topic }} <br>
+                            <strong>Author:</strong> {{ post.author }} <br>
+                            <strong>Created on:</strong> {{ post.created_on }}
+                        </div>
+                        <div class="additional-images">
+                            {% for image in post.additional_images %}
+                                <img src="{{ image }}" alt="Additional image for {{ post.title }}">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-warning">No blog posts available.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.3.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
